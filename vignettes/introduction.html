@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Vignette for the CondiS Package</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Vignette for the CondiS Package</h1>
+
+
+
+<p>CondiS is an R package that imputes survival time for censored observations. It allows the direct application of standard machine learning techniques for regression modeling once the imputed survival time is obtained. This vignette shows the use of CondiS package and introduce the things CondiS can do for you. CondiS was created by Yizhuo Wang, Xuelin Huang, Ziyi Li and Christopher R. Flowers, and is now maintained by Yizhuo Wang.</p>
+<p>Install <strong>CondiS</strong> using the code below to to ensure that all the needed packages are installed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;CondiS&quot;, dependencies = c(&quot;survival&quot;, &quot;caret&quot;))</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CondiS)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: caret</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: ggplot2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: lattice</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: survival</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;survival&#39;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following object is masked from &#39;package:caret&#39;:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     cluster</span></span></code></pre></div>
+<p><strong>CondiS</strong> has two functions to help impute the survival times as much alike as true survival times for the censored observations. A built-in R dataset in the survival package, rotterdam, is used here to demonstrate the usages of these two functions.</p>
+<div id="condis-function" class="section level2">
+<h2>CondiS function</h2>
+<p>The imputed survival times for censored observations are generated based on their conditional survival distributions derived from the Kaplan-Meier estimator. Below are the input parameters of the CondiS function:</p>
+<ul>
+<li>time: The follow up time for right-censored data.</li>
+<li>status: The censoring indicator, normally 0=right censored, 1=event at time.</li>
+<li>tmax: A self-defined time-of-interest point; if left undefined, then it is defaulted as the maximum follow up time.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;rotterdam&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">pmax</span>(rotterdam<span class="sc">$</span>recur, rotterdam<span class="sc">$</span>death)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>rfstime <span class="ot">&lt;-</span> <span class="fu">with</span>(rotterdam, <span class="fu">ifelse</span>(recur<span class="sc">==</span><span class="dv">1</span>, rtime, dtime))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>rotterdam <span class="ot">&lt;-</span> rotterdam[<span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>rotterdam<span class="sc">$</span>status <span class="ot">=</span> status</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>rotterdam<span class="sc">$</span>rfstime <span class="ot">=</span> rfstime</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(rfstime, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> rotterdam)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain the imputed survival time</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>pred_time <span class="ot">=</span> <span class="fu">CondiS</span>(rfstime, status)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>rotterdam<span class="sc">$</span>pred_time <span class="ot">=</span> pred_time</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>rotterdam<span class="sc">$</span>status2 <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(status))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(pred_time, status2) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> rotterdam)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">Censored =</span> fit,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">CondiS =</span> fit_2)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  combined,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> rotterdam,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">combine =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">censor =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">risk.table =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="st">&quot;jco&quot;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="condis-x-function" class="section level2">
+<h2>CondiS-X function</h2>
+<p>The imputed survival times are further improved by incorporating the covariate information through machine learning modeling (CondiS-X). Below are the input parameters of the CondiS-X function:</p>
+<ul>
+<li>pred_time: The imputed follow up time for right-censored data.</li>
+<li>status: The censoring indicator, normally 0=right censored, 1=event at time.</li>
+<li>covariates: The additional patient data that is presumably associated with the survival time.</li>
+<li>method: Choose from 8 machine learning algorithms, including: “glm”, “ridge”, “lasso”, “gbm”, “rf”, “svm”, “knn”, “ann”; if missing, the default is set up as “glm”.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>covariates <span class="ot">=</span> rotterdam[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the imputed survival time</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pred_time_2 <span class="ot">=</span> <span class="fu">CondiS_X</span>(pred_time, status, covariates)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>rotterdam<span class="sc">$</span>pred_time_2 <span class="ot">=</span> pred_time_2</span></code></pre></div>
+</div>
+<div id="perform-regular-machine-learning-analysis-using-condis-imputed-time" class="section level2">
+<h2>Perform regular machine learning analysis using CondiS-imputed time</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre-process the data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>preproc <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(rotterdam[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&#39;center&#39;</span>, <span class="st">&#39;scale&#39;</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>trainPreProc <span class="ot">&lt;-</span> <span class="fu">predict</span>(preproc, rotterdam[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>train_control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Train-test split</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>smp_size <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fl">0.75</span> <span class="sc">*</span> <span class="fu">nrow</span>(rotterdam))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>train_ind <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(rotterdam)), <span class="at">size =</span> smp_size)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> rotterdam[train_ind, ]</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> rotterdam[<span class="sc">-</span>train_ind, ]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>fit_svm <span class="ot">=</span> <span class="fu">train</span>(</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      pred_time <span class="sc">~</span> .<span class="sc">-</span>status<span class="sc">-</span>status2<span class="sc">-</span>rfstime<span class="sc">-</span>pred_time,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> train,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&quot;svmRadial&quot;</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">trControl =</span> train_control,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.action =</span> na.omit</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>pred_svm <span class="ot">=</span> <span class="fu">predict</span>(fit_svm, test)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean absolute error (MAE)</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>calc_MAE <span class="ot">&lt;-</span> <span class="cf">function</span>(actual,predicted)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  error <span class="ot">&lt;-</span> actual <span class="sc">-</span> predicted</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>(error))</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="do">## In the testing set:</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co"># The MAE of CondiS-imputed survival time and SVM-predicted survival time is:</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_MAE</span>(test<span class="sc">$</span>pred_time,pred_svm)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 226.0307</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># The MAE of the CondiS-X-imputed survival time and the SVM-predicted survival time is:</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="fu">calc_MAE</span>(test<span class="sc">$</span>pred_time_2,pred_svm)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 181.4269</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
