@@ -9,6 +9,8 @@ License: GPL-2
 Encoding: UTF-8
 Depends: R (>= 3.6), caret, survival
 NeedsCompilation: no
+URL: https://github.com/yizhuo-wang/CondiS
+BugReports: https://github.com/yizhuo-wang/CondiS/issues
 Suggests: 
     rmarkdown,
     knitr
